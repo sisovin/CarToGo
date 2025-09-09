@@ -30,7 +30,7 @@ export default function DriverDashboardPage() {
 
         if (u && u.role === "driver") {
             setLoading(true);
-            Promise.all([getTrips(u.id), getVehicles(u.id)])
+            Promise.all([getTrips(), getVehicles()])
                 .then(([t, v]) => {
                     setTrips(t);
                     setVehicles(v);

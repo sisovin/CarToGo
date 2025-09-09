@@ -1,16 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, User, Mail, Phone } from "lucide-react";
+import { Eye, EyeOff, User as UserIcon, Mail, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { register } from "@/lib/auth";
+import { register, type User } from "@/lib/auth";
 
 interface RiderSignupProps {
-  onSignup?: (userData: any) => void;
+  onSignup?: (userData: User) => void;
   onSwitchToLogin?: () => void;
   initialRole?: "rider" | "driver";
 }
@@ -86,8 +86,8 @@ export default function RiderSignup({
       });
 
       onSignup(user);
-    } catch (err: any) {
-      setErrors({ general: err?.message || "Failed to create account" });
+    } catch (err: unknown) {
+      setErrors({ general: err instanceof Error ? err.message : "Failed to create account" });
     } finally {
       setIsLoading(false);
     }
@@ -145,7 +145,7 @@ export default function RiderSignup({
                   First Name
                 </Label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
+                  <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />
                   <Input
                     id="firstName"
                     type="text"
@@ -284,7 +284,7 @@ export default function RiderSignup({
                   className="border-gray-600 data-[state=checked]:bg-teal-500 data-[state=checked]:border-teal-500"
                 />
                 <Label htmlFor="agreeToTerms" className="text-xs text-gray-400 leading-relaxed">
-                  I agree to CarToGo's{" "}
+                  I agree to CarToGo&apos;s{" "}
                   <span className="text-teal-400 hover:underline cursor-pointer">
                     Terms of Service
                   </span>{" "}

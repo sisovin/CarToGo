@@ -6,19 +6,13 @@ import {
   MapPin,
   Clock,
   Car,
-  ChevronDown,
   X,
   User,
   Star,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";

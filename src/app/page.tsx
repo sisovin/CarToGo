@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { MapPin, Search, Car, Clock, ChevronRight } from "lucide-react";
+import { MapPin, Clock, ChevronRight } from "lucide-react";
 import RiderSignin from "@/components/auth/RiderSignin";
 import RiderSignup from "@/components/auth/RiderSignup";
 import DriverSignin from "@/components/auth/DriverSignin";
@@ -51,6 +51,8 @@ export default function Home() {
       router.push("/account");
     } else if (user.role === "driver") {
       router.push("/driver/dashboard");
+    } else if (user.role === "admin") {
+      router.push("/admin/dashboard");
     }
   };
 
@@ -61,6 +63,8 @@ export default function Home() {
       router.push("/account");
     } else if (user.role === "driver") {
       router.push("/driver/dashboard");
+    } else if (user.role === "admin") {
+      router.push("/admin/dashboard");
     }
   };
 
@@ -98,9 +102,10 @@ export default function Home() {
                 CarToGo
               </h1>
             </div>
-            <TabsList className="grid w-[200px] grid-cols-2 bg-gray-800">
+            <TabsList className="grid w-[300px] grid-cols-3 bg-gray-800">
               <TabsTrigger value="rider">Rider</TabsTrigger>
               <TabsTrigger value="driver">Driver</TabsTrigger>
+              <TabsTrigger value="admin">Admin</TabsTrigger>
             </TabsList>
             {/* Auth controls */}
             {currentUser ? (
@@ -298,6 +303,39 @@ export default function Home() {
                         ))}
                       </div>
                     </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+          </TabsContent>
+
+          {/* Admin Tab */}
+          <TabsContent value="admin" className="h-full m-0">
+            <div className="flex-1 flex flex-col">
+              {/* Admin Login Section */}
+              <div className="flex-1 flex items-center justify-center bg-gradient-to-br from-gray-900 via-black to-gray-900">
+                <Card className="w-full max-w-md bg-gray-900/90 border-gray-800">
+                  <CardContent className="p-8">
+                    <div className="text-center mb-6">
+                      <h2 className="text-2xl font-bold text-teal-400 mb-2">Admin Portal</h2>
+                      <p className="text-gray-300 text-sm">Sign in to access administrative dashboard</p>
+                    </div>
+
+                    {/* Demo Credentials Display */}
+                    <div className="mb-6 p-4 bg-gray-800/50 rounded-lg">
+                      <h3 className="text-sm font-semibold text-teal-400 mb-2">Demo Credentials:</h3>
+                      <div className="text-xs text-gray-300 space-y-1">
+                        <p><span className="text-gray-400">Email:</span> admin@cartogo.com</p>
+                        <p><span className="text-gray-400">Password:</span> admin123</p>
+                      </div>
+                    </div>
+
+                    {/* Direct Login Form */}
+                    <RiderSignin
+                      onSignin={handleSignedIn}
+                      onSwitchToSignup={() => setIsSignup(true)}
+                      initialRole="admin"
+                    />
                   </CardContent>
                 </Card>
               </div>

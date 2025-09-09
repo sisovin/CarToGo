@@ -1,18 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { 
-  Users, 
-  Car, 
-  MapPin, 
-  DollarSign, 
-  TrendingUp, 
-  TrendingDown,
+import {
+  Users,
+  Car,
+  MapPin,
+  DollarSign,
+  TrendingUp,
   Clock,
   AlertTriangle,
   CheckCircle,
   XCircle,
-  MoreVertical,
   Search,
   Filter,
   Download,
@@ -24,16 +22,9 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-interface AdminDashboardProps {
-  onViewDetails?: (type: string, id: string) => void;
-}
-
-export default function AdminDashboard({ 
-  onViewDetails = () => {} 
-}: AdminDashboardProps) {
+export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -148,7 +139,7 @@ export default function AdminDashboard({
               Live Dashboard
             </Badge>
           </div>
-          
+
           <div className="flex items-center space-x-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500" />

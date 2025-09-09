@@ -24,7 +24,6 @@ export default function DriverSignin({
     const [showPassword, setShowPassword] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<Record<string, string>>({});
-    const [role, setRole] = useState<"rider" | "driver">(initialRole);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -36,7 +35,7 @@ export default function DriverSignin({
 
         setIsLoading(true);
         try {
-            const user = await login({ email, password, role });
+            const user = await login({ email, password, role: initialRole });
             onSignin(user);
         } catch (err) {
             const message = (err as Error)?.message || "Sign in failed";

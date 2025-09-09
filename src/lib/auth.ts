@@ -5,7 +5,7 @@ export type User = {
     email: string;
     phone?: string;
     password: string;
-    role?: "rider" | "driver"; // added role
+    role?: "rider" | "driver" | "admin"; // added admin role
     createdAt: string;
 };
 
@@ -15,34 +15,53 @@ const CURRENT_USER_KEY = "ctg_current_user";
 function readUsers(): User[] {
     try {
         const raw = localStorage.getItem(USERS_KEY);
-        if (raw) return JSON.parse(raw) as User[];
+        let users: User[] = raw ? JSON.parse(raw) as User[] : [];
 
-        // Seed some sample users for local testing: one rider and one driver
-        const defaultUsers: User[] = [
-            {
-                id: `user_rider`,
-                firstName: 'Rider',
-                lastName: 'Test',
-                email: 'rider@example.com',
-                phone: '+85510000001',
-                password: 'password',
-                role: 'rider',
+        // Always ensure admin user exists
+        const adminExists = users.find(u => u.email === 'admin@cartogo.com');
+        if (!adminExists) {
+            const adminUser: User = {
+                id: 'user_admin',
+                firstName: 'Super',
+                lastName: 'Admin',
+                email: 'admin@cartogo.com',
+                phone: '+85510000003',
+                password: 'admin123',
+                role: 'admin',
                 createdAt: new Date().toISOString(),
-            },
-            {
-                id: `user_driver`,
-                firstName: 'Driver',
-                lastName: 'Test',
-                email: 'driver@example.com',
-                phone: '+85510000002',
-                password: 'password',
-                role: 'driver',
-                createdAt: new Date().toISOString(),
-            },
-        ];
+            };
+            users.push(adminUser);
+        }
 
-        writeUsers(defaultUsers);
-        return defaultUsers;
+        // If no users exist, seed with default rider and driver
+        if (users.length === 1 && users[0].email === 'admin@cartogo.com') {
+            const defaultUsers: User[] = [
+                {
+                    id: 'user_rider',
+                    firstName: 'Rider',
+                    lastName: 'Test',
+                    email: 'rider@example.com',
+                    phone: '+85510000001',
+                    password: 'password',
+                    role: 'rider',
+                    createdAt: new Date().toISOString(),
+                },
+                {
+                    id: 'user_driver',
+                    firstName: 'Driver',
+                    lastName: 'Test',
+                    email: 'driver@example.com',
+                    phone: '+85510000002',
+                    password: 'password',
+                    role: 'driver',
+                    createdAt: new Date().toISOString(),
+                },
+            ];
+            users = [...defaultUsers, ...users];
+        }
+
+        writeUsers(users);
+        return users;
     } catch {
         return [];
     }
@@ -86,7 +105,7 @@ export async function register(user: Partial<User>): Promise<User> {
     });
 }
 
-export async function login({ email, password, role }: { email: string; password: string; role?: "rider" | "driver"; }) {
+export async function login({ email, password, role }: { email: string; password: string; role?: "rider" | "driver" | "admin"; }) {
     return new Promise<User>((resolve, reject) => {
         try {
             const users = readUsers();
@@ -113,4 +132,10 @@ export function getCurrentUser(): User | null {
 
 export function signOut() {
     localStorage.removeItem(CURRENT_USER_KEY);
+}
+
+// Force re-seed users (useful for development when adding new default users)
+export function reseedUsers() {
+    localStorage.removeItem(USERS_KEY);
+    readUsers(); // This will trigger the seeding
 }

@@ -1,22 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff, User, Mail, Phone, Car, FileText, CreditCard, Shield } from "lucide-react";
+import { Eye, EyeOff, User as UserIcon, Mail, Phone, Car, FileText, CreditCard, Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { type User, register } from "@/lib/auth";
 
 interface DriverSignupProps {
-  onSignup?: (userData: any) => void;
+  onSignup?: (userData: User) => void;
   onSwitchToLogin?: () => void;
 }
 
-export default function DriverSignup({ 
-  onSignup = () => {}, 
-  onSwitchToLogin = () => {} 
+export default function DriverSignup({
+  onSignup = () => { },
+  onSwitchToLogin = () => { }
 }: DriverSignupProps) {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -94,16 +95,29 @@ export default function DriverSignup({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      onSignup(formData);
+
+    try {
+      // Register the user with the auth system
+      const user = await register({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        role: "driver",
+      });
+
+      onSignup(user);
+    } catch (error) {
+      console.error("Registration failed:", error);
+      setErrors({ general: error instanceof Error ? error.message : "Registration failed" });
+    } finally {
       setIsLoading(false);
-    }, 2000);
+    }
   };
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -139,10 +153,10 @@ export default function DriverSignup({
             {/* Personal Information */}
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-teal-400 flex items-center">
-                <User className="w-5 h-5 mr-2" />
+                <UserIcon className="w-5 h-5 mr-2" />
                 Personal Information
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="firstName" className="text-sm font-medium text-gray-300">
@@ -224,9 +238,9 @@ export default function DriverSignup({
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-teal-400 flex items-center">
                 <FileText className="w-5 h-5 mr-2" />
-                Driver's License
+                Driver&apos;s License
               </h3>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="licenseNumber" className="text-sm font-medium text-gray-300">
                   License Number
@@ -251,7 +265,7 @@ export default function DriverSignup({
                 <Car className="w-5 h-5 mr-2" />
                 Vehicle Information
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="vehicleMake" className="text-sm font-medium text-gray-300">
@@ -349,7 +363,7 @@ export default function DriverSignup({
                 <Shield className="w-5 h-5 mr-2" />
                 Insurance Information
               </h3>
-              
+
               <div className="space-y-2">
                 <Label htmlFor="insuranceProvider" className="text-sm font-medium text-gray-300">
                   Insurance Provider (Optional)
@@ -371,7 +385,7 @@ export default function DriverSignup({
                 <CreditCard className="w-5 h-5 mr-2" />
                 Account Security
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-sm font-medium text-gray-300">
@@ -437,7 +451,7 @@ export default function DriverSignup({
                   className="border-gray-600 data-[state=checked]:bg-teal-500 data-[state=checked]:border-teal-500"
                 />
                 <Label htmlFor="agreeToTerms" className="text-xs text-gray-400 leading-relaxed">
-                  I agree to CarToGo's{" "}
+                  I agree to CarToGo&apos;s{" "}
                   <span className="text-teal-400 hover:underline cursor-pointer">
                     Driver Terms of Service
                   </span>{" "}

@@ -6,12 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { login } from "@/lib/auth";
+import { login, type User } from "@/lib/auth";
 
 interface RiderSigninProps {
-  onSignin?: (userData: any) => void;
+  onSignin?: (userData: User) => void;
   onSwitchToSignup?: () => void;
-  initialRole?: "rider" | "driver";
+  initialRole?: "rider" | "driver" | "admin";
 }
 
 export default function RiderSignin({
@@ -24,7 +24,7 @@ export default function RiderSignin({
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [role, setRole] = useState<"rider" | "driver">(initialRole);
+  const [role, setRole] = useState<"rider" | "driver" | "admin">(initialRole);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

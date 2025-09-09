@@ -17,7 +17,7 @@ export type Vehicle = {
     nationalId: string;
 };
 
-export function getTrips(_userId?: string): Promise<Trip[]> {
+export function getTrips(): Promise<Trip[]> {
     // Mocked trips for any user id
     const trips: Trip[] = [
         { id: "t1", date: "2025-03-21T12:34:00Z", amount: 7.2, from: "Central Market", to: "Phnom Penh Tower" },
@@ -26,7 +26,7 @@ export function getTrips(_userId?: string): Promise<Trip[]> {
     return new Promise((resolve) => setTimeout(() => resolve(trips), 500));
 }
 
-export function getVehicles(_userId?: string): Promise<Vehicle[]> {
+export function getVehicles(): Promise<Vehicle[]> {
     const vehicles: Vehicle[] = [
         {
             id: "v1",

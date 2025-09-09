@@ -23,8 +23,8 @@ export default function MyRidingAccount() {
 
     React.useEffect(() => {
         if (user) {
-            getTrips(user.id).then(setTrips);
-            if (user.role === "driver") getVehicles(user.id).then(setVehicles);
+            getTrips().then(setTrips);
+            if (user.role === "driver") getVehicles().then(setVehicles);
         }
     }, [user]);
 
@@ -51,7 +51,8 @@ export default function MyRidingAccount() {
                                         <h3 className="text-lg font-semibold">Account</h3>
                                         <div className="flex gap-2">
                                             <Button variant="outline" size="sm" onClick={() => setEditing(!editing)}>{editing ? "Cancel" : "Edit Profile"}</Button>
-                                            {user.role === "driver" ? <Button size="sm" onClick={() => router.push("/driver/dashboard")}>Driver Dashboard</Button> : null}
+                                            {user.role === "driver" && <Button size="sm" onClick={() => router.push("/driver/dashboard")}>Driver Dashboard</Button>}
+                                            {user.role === "admin" && <Button size="sm" onClick={() => router.push("/admin/dashboard")}>Admin Dashboard</Button>}
                                         </div>
                                     </div>
                                     {!editing ? (
