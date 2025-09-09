@@ -333,7 +333,7 @@ export default function Home() {
                     {/* Direct Login Form */}
                     <RiderSignin
                       onSignin={handleSignedIn}
-                      onSwitchToSignup={() => setIsSignup(true)}
+                      onSwitchToSignup={() => setAuthMode("signup")}
                       initialRole="admin"
                     />
                   </CardContent>
